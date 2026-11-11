@@ -1,51 +1,245 @@
-<
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bolívar Eco-Calculator</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f0f7f2;
+            color: #20352a;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        header h1 {
+            color: #087f5b;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: #6b8274;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 8px 30px rgba(21, 75, 48, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: #087f5b;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 9px;
+            color: #345444;
+            font-size: 0.95rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d6e5da;
+            border-radius: 10px;
+            background: #f9fcfa;
+            color: #20352a;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #10a875;
+            box-shadow: 0 0 0 3px rgba(16, 168, 117, 0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #087f5b, #10a875);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #066849, #087f5b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(8, 127, 91, 0.2);
+        }
+
+        #results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        #results[hidden] {
+            display: none;
+        }
+
+        .result-card {
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            background: #e8f7ef;
+            border: 1px solid #d0eddd;
+        }
+
+        .result-card.points {
+            background: #e3f5ed;
+            border-color: #bce8d2;
+        }
+
+        .result-card h3 {
+            font-size: 1rem;
+            color: #527461;
+            margin-bottom: 15px;
+        }
+
+        .result-card p {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #087f5b;
+        }
+
+        .result-card.points p {
+            color: #059669;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 25px 15px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 23px 18px;
+            }
+
+            #results {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card p {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Bolívar Eco-Calculator</h1>
+    <div class="container">
 
-    <form id="ecoForm">
+        <header>
+            <h1>Bolívar Eco-Calculator</h1>
+            <p class="subtitle">Calcula tu impacto ambiental y descubre tus Eco-Points.</p>
+        </header>
 
-        <label for="transport">Medio de transporte:</label>
-        <select id="transport" required>
-            <option value="">Selecciona una opción</option>
-            <option value="bus">Bus</option>
-            <option value="private">Carro privado</option>
-            <option value="shared">Carro compartido</option>
-            <option value="green">Bicicleta/Caminando</option>
-        </select>
+        <main>
 
-        <br><br>
+            <section class="card">
+                <h2>Calculadora de impacto ambiental</h2>
 
-        <label for="paper">Hojas de papel utilizadas diariamente:</label>
-        <input type="number" id="paper" min="0" step="1" required>
+                <form id="ecoForm">
 
-        <br><br>
+                    <div class="form-group">
+                        <label for="transport">Medio de transporte</label>
+                        <select id="transport" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="bus">Bus</option>
+                            <option value="private">Carro privado</option>
+                            <option value="shared">Carro compartido</option>
+                            <option value="green">Bicicleta/Caminando</option>
+                        </select>
+                    </div>
 
-        <label for="recycling">Nivel de reciclaje:</label>
-        <select id="recycling" required>
-            <option value="">Selecciona una opción</option>
-            <option value="low">Bajo</option>
-            <option value="medium">Medio</option>
-            <option value="high">Alto</option>
-        </select>
+                    <div class="form-group">
+                        <label for="paper">Hojas de papel utilizadas diariamente</label>
+                        <input
+                            type="number"
+                            id="paper"
+                            min="0"
+                            step="1"
+                            placeholder="Ej. 5"
+                            required
+                        >
+                    </div>
 
-        <br><br>
+                    <div class="form-group">
+                        <label for="recycling">Nivel de reciclaje</label>
+                        <select id="recycling" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="low">Bajo</option>
+                            <option value="medium">Medio</option>
+                            <option value="high">Alto</option>
+                        </select>
+                    </div>
 
-        <button type="submit">Calcular impacto ambiental</button>
+                    <button type="submit">
+                        Calcular impacto ambiental
+                    </button>
 
-    </form>
+                </form>
+            </section>
 
-    <div id="results" hidden>
-        <h2>Resultados ambientales</h2>
-        <p id="carbonResult"></p>
-        <p id="pointsResult"></p>
+            <section id="results" hidden>
+
+                <div class="result-card">
+                    <h3>Huella de carbono semanal</h3>
+                    <p id="carbonResult"></p>
+                </div>
+
+                <div class="result-card points">
+                    <h3>Eco-Points obtenidos</h3>
+                    <p id="pointsResult"></p>
+                </div>
+
+            </section>
+
+        </main>
+
     </div>
 
     <script>
@@ -55,13 +249,14 @@
             event.preventDefault();
 
             const transport = document.getElementById("transport").value;
-            const paper = Number(document.getElementById("paper").value);
+            const paperInput = document.getElementById("paper").value;
+            const paper = Number(paperInput);
             const recycling = document.getElementById("recycling").value;
 
             // Validate inputs
             if (
                 transport === "" ||
-                document.getElementById("paper").value === "" ||
+                paperInput === "" ||
                 recycling === "" ||
                 paper < 0 ||
                 !Number.isInteger(paper)
@@ -70,7 +265,7 @@
                 return;
             }
 
-            // Weekly carbon footprint factors (estimated kg CO2)
+            // Weekly carbon footprint factors
             const transportFactors = {
                 bus: 4,
                 private: 15,
@@ -78,10 +273,10 @@
                 green: 0
             };
 
-            // Daily paper consumption converted to weekly consumption
+            // Weekly paper consumption
             const weeklyPaper = paper * 5;
 
-            // Estimated carbon emissions
+            // Carbon emissions calculation
             const transportCO2 = transportFactors[transport] * 5;
             const paperCO2 = weeklyPaper * 0.005;
 
@@ -94,7 +289,7 @@
                 high: 25
             };
 
-            // Eco-Points calculation
+            // Transport points
             const transportPoints = {
                 bus: 20,
                 private: 5,
@@ -102,8 +297,10 @@
                 green: 30
             };
 
+            // Paper points
             const paperPoints = Math.max(0, 20 - weeklyPaper);
 
+            // Total Eco-Points
             const ecoPoints =
                 transportPoints[transport] +
                 paperPoints +
@@ -111,11 +308,10 @@
 
             // Display results
             document.getElementById("carbonResult").textContent =
-                "Huella de carbono semanal: " +
-                carbonFootprint.toFixed(2) + " kg CO2";
+                carbonFootprint.toFixed(2) + " kg CO₂";
 
             document.getElementById("pointsResult").textContent =
-                "Eco-Points obtenidos: " + ecoPoints;
+                ecoPoints + " puntos";
 
             document.getElementById("results").hidden = false;
         });
