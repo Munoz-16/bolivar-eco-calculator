@@ -1,0 +1,125 @@
+<
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolívar Eco-Calculator</title>
+</head>
+<body>
+
+    <h1>Bolívar Eco-Calculator</h1>
+
+    <form id="ecoForm">
+
+        <label for="transport">Medio de transporte:</label>
+        <select id="transport" required>
+            <option value="">Selecciona una opción</option>
+            <option value="bus">Bus</option>
+            <option value="private">Carro privado</option>
+            <option value="shared">Carro compartido</option>
+            <option value="green">Bicicleta/Caminando</option>
+        </select>
+
+        <br><br>
+
+        <label for="paper">Hojas de papel utilizadas diariamente:</label>
+        <input type="number" id="paper" min="0" step="1" required>
+
+        <br><br>
+
+        <label for="recycling">Nivel de reciclaje:</label>
+        <select id="recycling" required>
+            <option value="">Selecciona una opción</option>
+            <option value="low">Bajo</option>
+            <option value="medium">Medio</option>
+            <option value="high">Alto</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Calcular impacto ambiental</button>
+
+    </form>
+
+    <div id="results" hidden>
+        <h2>Resultados ambientales</h2>
+        <p id="carbonResult"></p>
+        <p id="pointsResult"></p>
+    </div>
+
+    <script>
+        const form = document.getElementById("ecoForm");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const transport = document.getElementById("transport").value;
+            const paper = Number(document.getElementById("paper").value);
+            const recycling = document.getElementById("recycling").value;
+
+            // Validate inputs
+            if (
+                transport === "" ||
+                document.getElementById("paper").value === "" ||
+                recycling === "" ||
+                paper < 0 ||
+                !Number.isInteger(paper)
+            ) {
+                alert("Por favor, completa todos los campos correctamente.");
+                return;
+            }
+
+            // Weekly carbon footprint factors (estimated kg CO2)
+            const transportFactors = {
+                bus: 4,
+                private: 15,
+                shared: 8,
+                green: 0
+            };
+
+            // Daily paper consumption converted to weekly consumption
+            const weeklyPaper = paper * 5;
+
+            // Estimated carbon emissions
+            const transportCO2 = transportFactors[transport] * 5;
+            const paperCO2 = weeklyPaper * 0.005;
+
+            const carbonFootprint = transportCO2 + paperCO2;
+
+            // Recycling points
+            const recyclingPoints = {
+                low: 5,
+                medium: 15,
+                high: 25
+            };
+
+            // Eco-Points calculation
+            const transportPoints = {
+                bus: 20,
+                private: 5,
+                shared: 15,
+                green: 30
+            };
+
+            const paperPoints = Math.max(0, 20 - weeklyPaper);
+
+            const ecoPoints =
+                transportPoints[transport] +
+                paperPoints +
+                recyclingPoints[recycling];
+
+            // Display results
+            document.getElementById("carbonResult").textContent =
+                "Huella de carbono semanal: " +
+                carbonFootprint.toFixed(2) + " kg CO2";
+
+            document.getElementById("pointsResult").textContent =
+                "Eco-Points obtenidos: " + ecoPoints;
+
+            document.getElementById("results").hidden = false;
+        });
+    </script>
+
+</body>
+</html>
